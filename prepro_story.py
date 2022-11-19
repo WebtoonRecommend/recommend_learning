@@ -3,6 +3,7 @@ from konlpy.tag import Okt
 from collections import Counter
 from tensorflow.keras.preprocessing.text import Tokenizer
 import pandas as pd
+import pickle
 
 # 사용할 db 연결
 
@@ -30,14 +31,14 @@ for i in desp: # 데이터를 각 변수별로 분리하기
 # 정규표현식으로 한글이 아닌 것 제거
 Description = pd.DataFrame(Description)
 
-Description[0] = Description[0].str.replace("[^ㄱ-ㅎㅏ-ㅣ가-힣 ]","")
+Description[0] = Description[0].str.replace("[^ㄱ-ㅎㅏ-ㅣ가-힣 ]","") # 한글이 아닌 것들 제거
 
 Description = Description[0].to_list()
 
 # 웹툰 줄거리 토큰화(어근 단위로 문장을 분할)
 okt = Okt() 
 for j in range(len(Description)):
-    Description[j] = okt.morphs(Description[j]) # 어근 단위로 문장을 분할
+    Description[j] = okt.morphs(Description[j], stem=True) # 어근 단위로 문장을 분할
 
 # 웹툰 줄거리 불용어 제거(불필요한 단어)
 
@@ -76,4 +77,13 @@ from gensim.models import Word2Vec
 
 model = Word2Vec(sentences=Description, vector_size=100, window=5, min_count=5, workers=4, sg=0) # 단어 임베딩
 
-model.wv.save_word2vec_format('descrip_w2v')
+print(model.wv.most_similar('대학'))
+model.wv.save_word2vec_format('descrip_w2v') # 임베딩한 모델을 저장
+
+with open('Descrip.pkl', 'wb') as f: # 전처리된 Description을 pkl 파일로 저장
+    for a in Description:
+        pickle.dump(a , f)
+
+with open('Title.pkl', 'wb') as f: # 전처리된 Title을 pkl 파일로 저장
+    for a in Title:
+        pickle.dump(a , f)
