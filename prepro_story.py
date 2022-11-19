@@ -42,9 +42,10 @@ for j in range(len(Description)):
 
 # 웹툰 줄거리 불용어 제거(불필요한 단어)
 
-f = open('stop_word.txt', 'r') # 불용어 목록 파일 읽어오기
+stop_words_file = 'hi'
+with open('stop_word.txt', 'r') as f:# 불용어 목록 파일 읽어오기
+    stop_words_file = f.readlines() # 불용어 목록 리스트로 저장
 
-stop_words_file = f.readlines() # 불용어 목록 리스트로 저장
 for i in range(len(stop_words_file)):
     stop_words_file[i] = stop_words_file[i].strip()
     
@@ -73,9 +74,9 @@ for i in range(len(Description)):
 
 # 단어 임베딩
 
-from gensim.models import Word2Vec
+from gensim.models import Word2Vec, FastText
 
-model = Word2Vec(sentences=Description, vector_size=100, window=5, min_count=5, workers=4, sg=0) # 단어 임베딩
+model = FastText(sentences=Description, vector_size=100, window=5, min_count=1, workers=4, sg=0) # 단어 임베딩
 
 print(model.wv.most_similar('대학'))
 model.wv.save_word2vec_format('descrip_w2v') # 임베딩한 모델을 저장
