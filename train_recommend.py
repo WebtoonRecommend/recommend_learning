@@ -57,15 +57,20 @@ document = get_doc2vec(Description) # 각 웹툰의 줄거리를 각 단어의 �
 # 웹툰 줄거리의 유사도 계산
 story_cosine = cosine_similarity(document) #코사인 유사도를 2차원의 형태로 생성
 
-def Recommendations10(title): # https://wikidocs.net/102705 참고
+def Recommendations10(titles, nums): # https://wikidocs.net/102705 참고
     WebToon = Title[['Title']]
     indices = list(WebToon.index)
-    idx = WebToon.index[WebToon['Title']==title].to_list()[0]
-    idx = indices[idx]
+    doc2vec = 0
+    for i in titles:
+        idx = WebToon.index[WebToon['Title']==i].to_list()[0]
+        idx = indices[idx]
+        doc2vec += document[idx]
+    
+    doc2vec = doc2vec / len(titles)
     
     sim_scores = list(enumerate(story_cosine[idx]))
     sim_scores = sorted(sim_scores, key = lambda x: x[1], reverse=True)
-    sim_scores = sim_scores[1:11]
+    sim_scores = sim_scores[1:nums + 1]
 
     WebToon_indices = [i[0] for i in sim_scores]
 
@@ -74,7 +79,7 @@ def Recommendations10(title): # https://wikidocs.net/102705 참고
     return recommend
 
 
-def FirstRecommendations10(words): # https://wikidocs.net/102705 참고, 처음 입력 받은 단어를 기반으로 추천, 처음 받은 단어의 word2vec값을 평균내어 입력
+def FirstRecommendations(words): # https://wikidocs.net/102705 참고, 처음 입력 받은 단어를 기반으로 추천, 처음 받은 단어의 word2vec값을 평균내어 입력
     
     WebToon = Title[['Title']] # 웹툰 제목 목록
     doc2vec = 0 # word2vec의 평균을 저장할 변수
@@ -95,4 +100,4 @@ def FirstRecommendations10(words): # https://wikidocs.net/102705 참고, 처음 
     return recommend
 
 
-print(Recommendations10('대학일기'))
+print(Recommendations10(['대학일기', '연우의 순정', '세번째 로망스'], 5))
