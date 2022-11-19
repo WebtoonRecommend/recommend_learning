@@ -2,3 +2,5 @@ test.db
 descrip_w2v
 Descrip.pkl
 Title.pkl
+Story_Cosine.pkl
+document.pkl
