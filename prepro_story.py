@@ -74,7 +74,7 @@ for i in range(len(Description)):
 
 # 단어 임베딩
 
-from gensim.models import Word2Vec, FastText
+from gensim.models import FastText
 
 model = FastText(sentences=Description, vector_size=100, window=5, min_count=1, workers=4, sg=0) # 단어 임베딩
 

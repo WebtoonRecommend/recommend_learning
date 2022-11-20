@@ -45,31 +45,31 @@ with open('Story_Cosine.pkl', 'rb') as f: # pickle 파일에서 전처리한 Tit
 
 ########################################################################## 함수
 
-def Recommendations10(titles, nums): # https://wikidocs.net/102705 참고
-    WebToon = Title[['Title']]
+WebToon = Title[['Title']]
+
+def Recommendations10(titles): # https://wikidocs.net/102705 참고
     indices = list(WebToon.index)
     doc2vec = 0
     for i in titles:
         idx = WebToon.index[WebToon['Title']==i].to_list()[0]
         idx = indices[idx]
         doc2vec += document[idx]
-    
+
     doc2vec = doc2vec / len(titles)
     
     sim_scores = list(enumerate(story_cosine[idx]))
     sim_scores = sorted(sim_scores, key = lambda x: x[1], reverse=True)
-    sim_scores = sim_scores[1:nums + 1]
+    sim_scores = sim_scores[1:11]
 
     WebToon_indices = [i[0] for i in sim_scores]
 
     recommend = WebToon.iloc[WebToon_indices].reset_index(drop=True)
 
-    return recommend
+    return recommend.to_json()
 
 
 def FirstRecommendations(words): # https://wikidocs.net/102705 참고, 처음 입력 받은 단어를 기반으로 추천, 처음 받은 단어의 word2vec값을 평균내어 입력
     
-    WebToon = Title[['Title']] # 웹툰 제목 목록
     doc2vec = 0 # word2vec의 평균을 저장할 변수
     
     for i in words: # 추천받은 단어의 word2vec들을 모두 합하여 평균을 냄
@@ -77,6 +77,7 @@ def FirstRecommendations(words): # https://wikidocs.net/102705 참고, 처음 �
     
     doc2vec = doc2vec / len(words) 
 
+   
     sim_scores = list(enumerate(doc2vec))
     sim_scores = sorted(sim_scores, key = lambda x: x[1], reverse=True)
     sim_scores = sim_scores[1:11]
@@ -85,6 +86,8 @@ def FirstRecommendations(words): # https://wikidocs.net/102705 참고, 처음 �
 
     recommend = WebToon.iloc[WebToon_indices].reset_index(drop=True)
 
-    return recommend
+    return recommend.to_json()
 
-print(Recommendations10(['대학일기'], 10))
+print(FirstRecommendations(['연애', '대학', '사랑']))
+
+print(Recommendations10(['대학일기', '대학원 탈출일지']))
