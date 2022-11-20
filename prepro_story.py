@@ -42,24 +42,21 @@ for j in range(len(Description)):
 
 # 웹툰 줄거리 불용어 제거(불필요한 단어)
 
-stop_words_file = 'hi'
+stop_words_file = []
 with open('stop_word.txt', 'r') as f:# 불용어 목록 파일 읽어오기
-    stop_words_file = f.readlines() # 불용어 목록 리스트로 저장
+    stop_words_file += f.readlines() # 불용어 목록 리스트로 저장
 
 for i in range(len(stop_words_file)):
-    stop_words_file[i] = stop_words_file[i].strip()
-    
+    stop_words_file[i] = stop_words_file[i][:-1]
 
-# 불용어 삭제 함수 정의
-def del_stop(a, stop_words): 
-    for j in stop_words:
-        if j in a:
-            a.remove(j)
-    return a
+
+
+for i in range(len(stop_words_file)):
+    stop_words_file[i] = stop_words_file[i].strip()  
 
 # 불용어 삭제
 for i in range(len(Description)):
-    Description[i] = del_stop(Description[i], stop_words_file)
+    Description[i] = [word for word in Description[i] if not word in stop_words_file]
 
 # 단어 토큰화
 
