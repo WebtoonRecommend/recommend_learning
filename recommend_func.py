@@ -51,8 +51,8 @@ def Recommendations10(titles): # https://wikidocs.net/102705 참고
     indices = list(WebToon.index)
     doc2vec = 0
     for i in titles:
-        idx = WebToon.index[WebToon['Title']==i].to_list()[0]
-        idx = indices[idx]
+        idx = list(WebToon.index[WebToon['Title']==i])
+        idx = indices[idx[0]]
         doc2vec += document[idx]
 
     doc2vec = doc2vec / len(titles)
@@ -65,7 +65,7 @@ def Recommendations10(titles): # https://wikidocs.net/102705 참고
 
     recommend = WebToon.iloc[WebToon_indices].reset_index(drop=True)
 
-    return recommend.to_json()
+    return recommend.to_dict()
 
 
 def FirstRecommendations(words): # https://wikidocs.net/102705 참고, 처음 입력 받은 단어를 기반으로 추천, 처음 받은 단어의 word2vec값을 평균내어 입력
@@ -86,8 +86,8 @@ def FirstRecommendations(words): # https://wikidocs.net/102705 참고, 처음 �
 
     recommend = WebToon.iloc[WebToon_indices].reset_index(drop=True)
 
-    return recommend.to_json()
+    return recommend.to_dict()
 
-print(FirstRecommendations(['연애', '대학', '사랑']))
+# print(FirstRecommendations(['연애', '대학', '사랑']))
 
-print(Recommendations10(['대학일기', '대학원 탈출일지']))
+# print(Recommendations10(['대학일기', '대학원 탈출일지']))
