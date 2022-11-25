@@ -15,6 +15,7 @@ cur = con.cursor()
 
 desp = cur.execute('select 웹툰ID, 이름, 설명, 장르 from webtoon_info') # 데이터를 쿼리하여 가져오기
 
+print(desp)
 # 데이터 파싱
 
 WebToonId = []
