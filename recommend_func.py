@@ -47,7 +47,7 @@ with open('Story_Cosine.pkl', 'rb') as f: # pickle 파일에서 전처리한 Tit
 
 WebToon = Title[['Title']]
 
-def Recommendations10(titles): # https://wikidocs.net/102705 참고
+def Recommendations10(titles, days): # https://wikidocs.net/102705 참고
     indices = list(WebToon.index)
     doc2vec = 0
     for i in titles:
@@ -59,7 +59,11 @@ def Recommendations10(titles): # https://wikidocs.net/102705 참고
     
     sim_scores = list(enumerate(story_cosine[idx]))
     sim_scores = sorted(sim_scores, key = lambda x: x[1], reverse=True)
-    sim_scores = sim_scores[1:11]
+    
+    if days == 0:
+        sim_scores = sim_scores[1:11]
+    else:    
+        sim_scores = sim_scores[days*10:10*(days+1)]
 
     WebToon_indices = [i[0] for i in sim_scores]
 
@@ -95,8 +99,9 @@ def FirstRecommendations(words): # https://wikidocs.net/102705 참고, 처음 �
 
     return recommend[:10]
 
-print(FirstRecommendations(['연애', '대학', '사랑']))
+# print(FirstRecommendations(['연애', '대학', '사랑']))
 
-print(Recommendations10(['나노리스트', '이두나!']))
+print(Recommendations10(['나노리스트', '이두나!'], 1))
+print(Recommendations10(['나노리스트', '이두나!'], 2))
 
 # print(model.most_similar('대학원'))
