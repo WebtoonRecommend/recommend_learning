@@ -69,11 +69,11 @@ def Recommendations10(titles, days): # https://wikidocs.net/102705 참고
 
     recommend = WebToon.iloc[WebToon_indices].reset_index(drop=True)
     recommend = [['0', recommend['Title'][i]] for i in range(len(recommend['Title']))]
-
+    print(recommend[0][1])
     for i in range(len(recommend)):
         for j in titles:
             if recommend[i][1] == j:
-                recommend[i].pop(i)
+                recommend.pop(i)
 
     return recommend
 
@@ -98,6 +98,8 @@ def FirstRecommendations(words): # https://wikidocs.net/102705 참고, 처음 �
     recommend = [['0', recommend['Title'][i]] for i in range(len(recommend['Title']))]
 
     for i in range(len(recommend)):
+        if i == len(recommend):
+            break
         for j in words:
             if recommend[i][1] == j:
                 recommend[i].pop(i)
