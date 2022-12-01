@@ -94,7 +94,7 @@ def FirstRecommendations(
 
     sim_scores = list(enumerate(doc2vec))
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-    sim_scores = sim_scores[1 : 10 + len(words)]
+    sim_scores = sim_scores[days * 10 : (days + 1) * 10]
 
     WebToon_indices = [i[0] for i in sim_scores]
 
@@ -108,13 +108,11 @@ def FirstRecommendations(
             if recommend[i][1] == j:
                 recommend[i].pop(i)
 
-    if days == 0:
-        recommend[:10]
-    else:
-        return recommend[(days - 1) * 10 : 10 * days]
+    return recommend
 
 
-# print(FirstRecommendations(['연애', '대학', '사랑']))
+print(FirstRecommendations(["연애", "대학", "사랑"], 0))
+print(FirstRecommendations(["연애", "대학", "사랑"], 2))
 
 print(Recommendations10(["나노리스트", "이두나!"], 1))
 print(Recommendations10(["나노리스트", "이두나!"], 2))
